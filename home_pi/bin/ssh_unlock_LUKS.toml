@@ -1,0 +1,24 @@
+[server]
+
+host = "pinas5"
+port = 22
+
+[SSH]
+
+## Path to a private SSH key file for key-based SSH connection
+ssh_key = ""
+
+ssh_user = "pi"
+
+[LUKS]
+
+## LUKS password
+luks_pass = ""
+
+## LUKS keyfile path
+luks_key= "../../secrets/cryptkey_rsa"
+
+## LUKS container
+luks_device = "/dev/sdc"
+luks_name = "esata"
+luks_mount = "/mnt/esata"
