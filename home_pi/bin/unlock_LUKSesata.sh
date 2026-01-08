@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KEYFILE=/mnt/data/.secret
+KEYFILE=/mnt/data/.luks_secret
 
 ## Open LUKS device
 echo -e "\n>>>> Decrypting LUKS container ..."
