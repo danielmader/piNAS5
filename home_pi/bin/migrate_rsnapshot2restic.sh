@@ -1,11 +1,15 @@
 #!/bin/bash
 
+##==========================================================
+## Initial ideas and workflow description:
+## => https://strugglers.net/posts/2025/rethinking-my-backups/
+##==========================================================
 
-#-----------------------------------------------------------
-# Extract timestamps from rsnapshots
-# Gemini3 - Thinking Mode
-# https://gemini.google.com/share/5a0c10b7345b
-#-----------------------------------------------------------
+##----------------------------------------------------------
+## Extract timestamps from rsnapshots
+## Gemini3 - Thinking Mode
+## => https://gemini.google.com/share/5a0c10b7345b
+##----------------------------------------------------------
 # RSNAPSHOT_ROOT="/mnt/esata/rsnapshots"
 # for SNAPSHOT in "${RSNAPSHOT_ROOT}/manual."*; do
 #     echo -e "\n## Verarbeite: $SNAPSHOT"
@@ -30,14 +34,16 @@
 # done
 
 
-#-----------------------------------------------------------
-# Migrate rsnapshots to restic
-# Gemini 3 Thinking Mode
-# https://gemini.google.com/share/26a530897f9c
-#
-# https://crates.io/crates/cargo-binstall
-# > curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-#-----------------------------------------------------------
+##----------------------------------------------------------
+## Migrate rsnapshots to restic
+## Gemini 3 Thinking Mode
+## => https://gemini.google.com/share/26a530897f9c
+## 
+## Requires rustic
+## => https://github.com/rustic-rs/rustic
+## => https://crates.io/crates/cargo-binstall
+## $ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+##----------------------------------------------------------
 
 ## --- PREPARE ---
 swapoff -a
