@@ -6,7 +6,7 @@
 DEBUG=false
 SNAPSHOT_DIR="/pfad/zu/rsnapshot-backups/"
 SNAPSHOT_DIR="/mnt/esata/rsnapshots/"
-SNAPSHOT_DIR="/srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8/esata/rsnapshots/"
+#SNAPSHOT_DIR="/srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8/esata/rsnapshots/"
 
 ## Hilfefunktion
 usage() {

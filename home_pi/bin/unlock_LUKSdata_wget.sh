@@ -35,10 +35,10 @@ SECRET12=$(cat "$SECRET1" <(echo "$SECRET2"))
 
 ## Open LUKS devices
 echo -e "\n>>>> Decrypting LUKS containers ..."
-# sudo cryptsetup open --type luks  /dev/sda data1  --key-file=cryptkey
-# sudo cryptsetup open --type luks  /dev/sdb data2  --key-file=cryptkey
-echo "$SECRET12" | sudo cryptsetup open --type luks  /dev/sda data1  --key-file=-
-echo "$SECRET12" | sudo cryptsetup open --type luks  /dev/sdb data2  --key-file=-
+# /usr/sbin/cryptsetup open --type luks  /dev/sda data1  --key-file=cryptkey
+# /usr/sbin/cryptsetup open --type luks  /dev/sdb data2  --key-file=cryptkey
+echo "$SECRET12" | /usr/sbin/cryptsetup open --type luks  /dev/sda data1  --key-file=-
+echo "$SECRET12" | /usr/sbin/cryptsetup open --type luks  /dev/sdb data2  --key-file=-
 
 ## Mount RAID
-sudo mount /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
+/usr/bin/mount /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
