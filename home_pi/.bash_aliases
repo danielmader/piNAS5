@@ -29,6 +29,7 @@ alias sudo='sudo '
 ## Backup software
 alias rsnapshot.sh='/home/pi/bin/rsnapshot.sh'
 alias restic='/home/pi/bin/restic '
-alias resticrepo='/home/pi/bin/restic -r /mnt/esata/restic-repo -v -p /mnt/data/.restic_secret '
 alias rustic='/home/pi/.cargo/bin/rustic '
+alias resticrepo='/home/pi/bin/restic        -r /mnt/esata/restic-repo -v -p /mnt/data/.restic_secret '
+alias rusticrepo='/home/pi/.cargo/bin/rustic -r /mnt/esata/restic-repo    -p /mnt/data/.restic_secret '
 alias cargo-binstall='/home/pi/.cargo/bin/cargo-binstall '

@@ -35,14 +35,15 @@
 
 
 ##----------------------------------------------------------
-## Migrate rsnapshots to restic
+## Migrate rsnapshots to restic/rustic
 ## Gemini 3 Thinking Mode
 ## => https://gemini.google.com/share/26a530897f9c
-## 
+##
 ## Requires rustic
 ## => https://github.com/rustic-rs/rustic
 ## => https://crates.io/crates/cargo-binstall
 ## $ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+## $ ~/.cargo/bin/cargo-binstall rustic-rs
 ##----------------------------------------------------------
 
 ## --- PREPARE ---
@@ -51,19 +52,25 @@ swapoff -a
 ## --- KONFIGURATION ---
 #RSNAPSHOT_ROOT="/pfad/zu/rsnapshot"
 #RESTIC_REPO="/pfad/zu/restic-repo"
-#DATA_SUBDIR="localhost"  # Unterordner in manual.x (z.B. localhost)
+#DATA_SUBDIR="localhost"  # Unterordner im Snapshot (z.B. localhost)
 #TARGET_PATH="/"          # Wie der Pfad in restic/rustic erscheinen soll
 RSNAPSHOT_ROOT="/mnt/esata/rsnapshots"
 RESTIC_REPO="${RSNAPSHOT_ROOT}/restic-repo"
 
 DATA_SUBDIR="homes"
 TARGET_PATH="/mnt/data/homes"
-#DATA_SUBDIR="music"
-#TARGET_PATH="/mnt/data/Music"
-#DATA_SUBDIR="music2sort"
-#TARGET_PATH="/mnt/data/Music/_music2sort_"
-#DATA_SUBDIR="photo"
-#TARGET_PATH="/mnt/data/Photos"
+DATA_SUBDIR="music"
+TARGET_PATH="/mnt/data/Music"
+DATA_SUBDIR="Music"
+TARGET_PATH="/mnt/data/Music"
+DATA_SUBDIR="photo"
+TARGET_PATH="/mnt/data/Photos"
+DATA_SUBDIR="Photos"
+TARGET_PATH="/mnt/data/Photos"
+DATA_SUBDIR="Videos"
+TARGET_PATH="/mnt/data/Videos"
+DATA_SUBDIR="music2sort"
+TARGET_PATH="/mnt/data/Music/_music2sort_"
 
 #export RUSTIC_PASSWORD="dein_passwort"
 PASSWORD_FILE="${RSNAPSHOT_ROOT}/restic_secret"
@@ -93,7 +100,6 @@ for i in {22..0}; do
             --time "$TIMESTAMP" \
             --as-path "$TARGET_PATH" \
             --exclude-if-present CACHEDIR.TAG \
-            --tag "cleaned" \
             --tag "migration" \
             --tag "rsnapshot-manual.${i}"
 

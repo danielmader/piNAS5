@@ -17,7 +17,7 @@ omv/
 
 /home_pi/.ssh/
 /home_pi/.config/
-/home_pi/bin/restic*
+/home_pi/bin/restic_*
 /home_pi/certs/
 
 TODO.lst
