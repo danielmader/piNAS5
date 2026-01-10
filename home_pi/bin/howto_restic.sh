@@ -44,7 +44,7 @@ sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  find b
 sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  restore latest --include /foo --exclude /foo/bar --target /tmp/restore-restic-repo
 
 >>>> Shortcuts (.bash_aliases):
-resticrepo=$(restic -r /mnt/esata/restic-repo/ -v --password-file=/mnt/data/.secret)
-rusticrepo=$(rustic -r /mnt/esata/restic-repo/    --password-file=/mnt/data/.secret)
+resticrepo := \$(restic -r /mnt/esata/restic-repo/ -v --password-file=/mnt/data/.secret)
+rusticrepo := \$(rustic -r /mnt/esata/restic-repo/    --password-file=/mnt/data/.secret)
 
 EOF

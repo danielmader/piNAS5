@@ -66,11 +66,21 @@ for SRC in "${SOURCES[@]}"; do
         TARGET_NAME=$(basename "$SRC")
         TARGET_NAME=$SRC
 
-        $RESTIC_BIN -r "$REPO" backup "$SRC" \
-            --as-path "/$TARGET_NAME" \
-            --exclude-if-present CACHEDIR.TAG \
-            --tag "regular" \
-            --skip-if-unchanged
+        if $RESTIC_BIN -r "$REPO" backup "$SRC" \
+                --as-path "/$TARGET_NAME" \
+                --exclude-if-present CACHEDIR.TAG \
+                --tag "regular" \
+                --skip-if-unchanged; then
+            echo $($RESTIC_BIN -V)
+            ## => rustic
+        else
+            ## => restic
+            echo $($RESTIC_BIN version)
+            $RESTIC_BIN -r "$REPO" backup "$SRC" \
+                --exclude-caches \
+                --tag "regular" \
+                --skip-if-unchanged
+        fi
     else
         echo "WARNUNG: Pfad $SRC nicht gefunden!"
     fi
