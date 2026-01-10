@@ -79,6 +79,7 @@ done
 ## --- OPTIONALER CHECK ---
 if [ "$CHECK_PERCENT" -gt 0 ]; then
     echo "--- Integritätscheck läuft ($CHECK_PERCENT% der Daten)... ---"
+    $RESTIC_BIN -r "$REPO" check --read-data --read-data-subset="${CHECK_PERCENT}%" ||
     $RESTIC_BIN -r "$REPO" check --read-data-subset="${CHECK_PERCENT}%"
 fi
 
