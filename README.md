@@ -1,3 +1,5 @@
+![piNAS% assembly 1](20241115_144518.jpg)
+![piNAS% assembly 2](20241120_184722.jpg)
 
 Prepare System
 --------------
