@@ -13,6 +13,7 @@ venv*
 Datasheets/
 GH_SSHUnlockLUKS/
 GH_rockpi-penta/
+GH_rockpi-penta-mod/
 secrets/
 omv/
 
