@@ -28,6 +28,9 @@ sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  ls <id
 sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  ls latest
 sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  ls latest /home --recursive
 
+>>>> Search files/directories in snapshots:
+sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  find *.ssh
+
 >>>> Mount a snapshot:
 sudo mkdir -p /tmp/restic-repo
 sudo restic -r /mnt/esata/restic-repo/ --password-file=/mnt/data/.secret  mount /tmp/restic-repo &
