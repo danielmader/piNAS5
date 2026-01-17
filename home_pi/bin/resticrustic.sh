@@ -70,7 +70,8 @@ for SRC in "${SOURCES[@]}"; do
                 --as-path "/$TARGET_NAME" \
                 --exclude-if-present CACHEDIR.TAG \
                 --tag "regular" \
-                --skip-if-unchanged; then
+                --skip-if-unchanged \
+                --ignore-inode; then
             echo $($RESTIC_BIN -V)
             ## => rustic
         else
@@ -79,7 +80,8 @@ for SRC in "${SOURCES[@]}"; do
             $RESTIC_BIN -r "$REPO" backup "$SRC" \
                 --exclude-caches \
                 --tag "regular" \
-                --skip-if-unchanged
+                --skip-if-unchanged \
+                --ignore-inode
         fi
     else
         echo "WARNUNG: Pfad $SRC nicht gefunden!"
