@@ -25,10 +25,10 @@
     <path d="M-50,820 L50,820 C63.8071,820 75,831.193 75,845 C75,858.807 63.8071,870 50,870 L-50,870 C-63.8071,870 -75,858.807 -75,845 C-75,831.193 -63.8071,820 -50,820 " fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
-    <path d="M-300,100 L-330,100 L-330,-100 L-300,-100 L-300,100" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+    <path d="M330,700 L300,700 L300,500 L330,500 L330,700" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
-    <path d="M330,700 L300,700 L300,500 L330,500 L330,700" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+    <path d="M330,-100 L300,-100 L300,100 L330,100 L330,-100" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
     <path d="M330,-700 L300,-700 L300,-500 L330,-500 L330,-700" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
@@ -37,10 +37,13 @@
     <path d="M-330,700 L-300,700 L-300,500 L-330,500 L-330,700" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
+    <path d="M-300,100 L-330,100 L-330,-100 L-300,-100 L-300,100" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+   </g>
+   <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
     <path d="M-300,-500 L-330,-500 L-330,-700 L-300,-700 L-300,-500" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
-    <path d="M330,-100 L300,-100 L300,100 L330,100 L330,-100" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+    <path d="M170,825 C170,836.046 161.046,845 150,845 C138.954,845 130,836.046 130,825 C130,813.954 138.954,805 150,805 C161.046,805 170,813.954 170,825 " fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
    </g>
    <g fill="#f1f3f5" fill-opacity="1" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="none" transform="matrix(1,0,0,1,1481.27,1042.53)">
     <path d="M120,825 C120,836.046 111.046,845 100,845 C88.9543,845 80,836.046 80,825 C80,813.954 88.9543,805 100,805 C111.046,805 120,813.954 120,825 " fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
@@ -92,6 +95,9 @@
    </g>
    <g fill="none" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="#000000" stroke-linecap="round" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="7" transform="matrix(1,0,0,1,1481.27,1042.53)">
     <path d="M300,500 L330,500" fill-rule="evenodd" vector-effect="none"/>
+   </g>
+   <g fill="none" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="#000000" stroke-linecap="round" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="7" transform="matrix(1,0,0,1,1481.27,1042.53)">
+    <path d="M170,825 C170,836.046 161.046,845 150,845 C138.954,845 130,836.046 130,825 C130,813.954 138.954,805 150,805 C161.046,805 170,813.954 170,825 " fill-rule="evenodd" vector-effect="none"/>
    </g>
    <g fill="none" font-family="Noto Sans" font-size="35.2778" font-style="normal" font-weight="400" stroke="#000000" stroke-linecap="round" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="7" transform="matrix(1,0,0,1,1481.27,1042.53)">
     <path d="M120,825 C120,836.046 111.046,845 100,845 C88.9543,845 80,836.046 80,825 C80,813.954 88.9543,805 100,805 C111.046,805 120,813.954 120,825 " fill-rule="evenodd" vector-effect="none"/>
