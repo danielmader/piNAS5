@@ -7,8 +7,9 @@
 *.env
 venv*
 
-## Backup images
+## Backup & recovery images
 *.img.gz
+FD14-LiteUSB+F4EGexe.zip
 
 Datasheets/
 GH_SSHUnlockLUKS/
