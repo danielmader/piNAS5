@@ -32,13 +32,9 @@ home_pi/.cargo/
 home_pi/bin/restic_*
 
 ## Symlinks
-home_pi/howto_check_restic_repo.sh
-home_pi/howto_restic.sh
+home_pi/*.sh
 home_pi/restic
-home_pi/resticrustic.sh
-home_pi/rsnapshot.sh
 home_pi/rustic
-home_pi/unlock_LUKSdata_wget.sh
-home_pi/unlock_LUKSesata.sh
+
 
 

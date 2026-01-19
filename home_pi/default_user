@@ -1,0 +1,4 @@
+$ id
+uid=1000(pi) gid=100(users) groups=100(users),4(adm),20(dialout),24(cdrom),27(sudo),29(audio),44(video),46(plugdev),60(games),102(input),105(render),106(netdev),108(_ssh),995(spi),994(i2c),993(gpio)
+$ groups
+users adm dialout cdrom sudo audio video plugdev games input render netdev _ssh gpio i2c spi

@@ -1,19 +1,17 @@
 #!/bin/bash
 
 ## Configuration
-SECRET1="/home/pi/.secret1"
 SECRET_USB="/home/pi/.secretUSB"
+SECRET1="/home/pi/.secret1"
 SECRET2_USB="/mnt/usb/cryptkey_rsa#2"
-SECRET2_EXT=1HPepbUIkCD6b3kPvYDQSJT74ED2ZEPec
+SECRET2_EXT="/home/pi/.secretEXT"
 
 ## UUIDs
-# $ sudo lsblk -o
-DISK1="db25f167-dffc-47de-98ff-cab6a0e272c1"  # /dev/sda
-DISK2="db25f167-dffc-47de-98ff-cab6a0e272c2"  # /dev/sdb
-USB="db25f167-dffc-47de-98ff-cab6a0e272c3"    # /dev/sdc oder /dev/sdd
-
-## Mountpoint of RAID device
-MOUNTPOINT_RAID="/srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8"
+# $ sudo lsblk -o NAME,FSTYPE,LABEL,UUID,PARTUUID,MOUNTPOINT
+DISK1="12280554-001a-43f9-aa5a-a0547201fce6"  # /dev/sda
+DISK2="fbfd2f96-25d2-45ac-99c1-d6647be23b55"  # /dev/sdb
+USB="7b4854df-4dd7-40fb-9028-9e7eff418da0"    # /dev/sdc1
+RAID="db25f167-dffc-47de-98ff-cab6a0e272c8"   # /dev/mapper/data1
 
 ## Status variables
 KEY_FOUND=false
@@ -23,7 +21,8 @@ SECRET2=""
 
 echo -e "\n>>>> Lese Schlüssel vom USB-Gerät..."
 
-if cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB" 2>/dev/null; then
+# cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB" 2>/dev/null
+if cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB"; then
     echo "USB-Gerät erfolgreich entschlüsselt."
 else
     echo "Warnung: USB-Gerät konnte nicht entschlüsselt werden!"
@@ -68,6 +67,7 @@ if [ "$KEY_FOUND" = false ]; then
     echo -e "\n>>>> Versuche Schlüssel-Download von Google Drive..."
 
     ## -q für "quiet" (weniger Output), -O- für Ausgabe auf Stdout
+    SECRET2_EXT=$(cat "$SECRET2_EXT")
     SECRET2=$(wget -q "https://drive.google.com/uc?id=$SECRET2_EXT&export=download" -O-)
 
     if [ -n "$SECRET2" ]; then
@@ -92,26 +92,39 @@ if [ "$KEY_FOUND" = true ]; then
 
     ## Entschlüsselung versuchen
     ## Wir nutzen echo -n, um keine unnötigen Newlines einzufügen, falls das Passwort empfindlich ist
-    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK1" data1 --key-file=-
+    # echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK1" data1 --key-file=-
+    # echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK2" data2 --key-file=-
+    echo "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK1" data1 --key-file=-
     RESULT1=$?
-    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK2" data2 --key-file=-
+    echo "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK2" data2 --key-file=-
     RESULT2=$?
 
-    ## Variable SECRET12 sofort aus dem Speicher löschen
+    ## Variablen sofort aus dem Speicher löschen
     unset SECRET12
+    unset SECRET1
     unset SECRET2
 
     if [ $RESULT1 -eq 0 ] && [ $RESULT2 -eq 0 ]; then
         echo "RAID-Laufwerke erfolgreich entschlüsselt."
-
-        ## Mount RAID
-        echo "Mounte RAID..."
-        /usr/bin/mount "$MOUNTPOINT_RAID"
     else
         echo "Fehler beim Entschlüsseln der Laufwerke."
-        exit 1
     fi
 else
     echo "Abbruch: Kein Schlüssel vorhanden."
+    exit 1
+fi
+
+## 4) Dateisystem mounten ======================================================
+
+echo -e "\n>>>> Mounte RAID..."
+## /etc/fstab
+# /usr/bin/mount /dev/disk/by-uuid/$RAID /srv/dev-disk-by-uuid-$RAID
+## manuell
+/usr/bin/mount -t btrfs -o defaults,nofail,noatime /dev/disk/by-uuid/$RAID /mnt/data
+
+if mount | grep "/mnt/data" > /dev/null; then
+    echo "RAID-Dateisystem erfolgreich eingebunden."
+else
+    echo "Fehler beim Einbinden des RAID-Dateisytems!"
     exit 1
 fi
