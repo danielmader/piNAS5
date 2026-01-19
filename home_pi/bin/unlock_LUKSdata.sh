@@ -1,29 +1,32 @@
 #!/bin/bash
 
-## Konfiguration
+## Configuration
 SECRET1="/home/pi/.secret1"
 SECRET_USB="/home/pi/.secretUSB"
 SECRET2_USB="/mnt/usb/cryptkey_rsa#2"
 SECRET2_EXT=1HPepbUIkCD6b3kPvYDQSJT74ED2ZEPec
 
-## Status-Variable, um zu prüfen, ob der Key gefunden wurde
+## UUIDs
+# $ sudo lsblk -o
+DISK1="db25f167-dffc-47de-98ff-cab6a0e272c1"  # /dev/sda
+DISK2="db25f167-dffc-47de-98ff-cab6a0e272c2"  # /dev/sdb
+USB="db25f167-dffc-47de-98ff-cab6a0e272c3"    # /dev/sdc oder /dev/sdd
+
+## Mountpoint of RAID device
+MOUNTPOINT_RAID="/srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8"
+
+## Status variables
 KEY_FOUND=false
 SECRET2=""
 
-echo ">>>> Starte Entschlüsselungsprozess..."
+## 1) Versuch: 2. Schlüsselfragment vom USB-Gerät holen ========================
 
-## 1) Versuch: 2. Schlüsselfragment vom USB-Stick holen ========================
+echo -e "\n>>>> Lese Schlüssel vom USB-Gerät..."
 
-## Versuche sdc1 oder sdd1 zu öffnen
-DEVICE_PATH=""
-if cryptsetup open --type luks /dev/sdc1 usb --key-file="$SECRET_USB" 2>/dev/null; then
-    echo "Erfolgreich an /dev/sdc1 geöffnet."
-    DEVICE_PATH="/dev/sdc1"
-elif cryptsetup open --type luks /dev/sdd1 usb --key-file="$SECRET_USB" 2>/dev/null; then
-    echo "Erfolgreich an /dev/sdd1 geöffnet."
-    DEVICE_PATH="/dev/sdd1"
+if cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB" 2>/dev/null; then
+    echo "USB-Gerät erfolgreich entschlüsselt."
 else
-    echo "Warnung: USB-Gerät konnte weder auf /dev/sdc1 noch auf /dev/sdd1 entschlüsselt werden."
+    echo "Warnung: USB-Gerät konnte nicht entschlüsselt werden!"
 fi
 
 ## Wenn ein Gerät geöffnet wurde, versuchen zu mounten und zu lesen
@@ -37,21 +40,21 @@ if [ -e "/dev/mapper/usb" ]; then
         if [ -f "$SECRET2_USB" ]; then
             SECRET2=$(cat "$SECRET2_USB")
             if [ -n "$SECRET2" ]; then
-                echo "Schlüssel erfolgreich vom USB-Stick gelesen."
+                echo "Schlüssel erfolgreich vom USB-Gerät gelesen."
                 KEY_FOUND=true
             else
-                echo "Fehler: Schlüsseldatei auf USB-Stick ist leer."
+                echo "Fehler: Schlüsseldatei auf USB-Gerät ist leer!"
             fi
         else
-            echo "Fehler: Schlüsseldatei nicht auf dem USB-Stick gefunden."
+            echo "Fehler: Schlüsseldatei nicht auf dem USB-Gerät gefunden!"
         fi
 
-        ## Aufräumen: USB-Stick sofort wieder unmounten und schließen (Sicherheit)
+        ## Aufräumen: USB-Gerät sofort wieder unmounten und schließen (Sicherheit)
         umount /mnt/usb
         cryptsetup close usb
-        echo "USB-Stick wieder ausgehängt und geschlossen."
+        echo "USB-Gerät wieder ausgehängt und geschlossen."
     else
-        echo "Fehler: Gerät konnte nicht gemountet werden."
+        echo "Fehler: USB-Gerät konnte nicht gemountet werden."
         ## Falls mount fehlschlägt, mapper trotzdem schließen
         cryptsetup close usb
     fi
@@ -62,7 +65,7 @@ fi
 ## https://drive.google.com/uc?id=<SECRET2_EXT>&export=download
 
 if [ "$KEY_FOUND" = false ]; then
-    echo -e "\n>>>> USB-Lesen fehlgeschlagen. Versuche Download von Google Drive..."
+    echo -e "\n>>>> Versuche Schlüssel-Download von Google Drive..."
 
     ## -q für "quiet" (weniger Output), -O- für Ausgabe auf Stdout
     SECRET2=$(wget -q "https://drive.google.com/uc?id=$SECRET2_EXT&export=download" -O-)
@@ -89,10 +92,9 @@ if [ "$KEY_FOUND" = true ]; then
 
     ## Entschlüsselung versuchen
     ## Wir nutzen echo -n, um keine unnötigen Newlines einzufügen, falls das Passwort empfindlich ist
-    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks /dev/sda data1 --key-file=-
+    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK1" data1 --key-file=-
     RESULT1=$?
-
-    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks /dev/sdb data2 --key-file=-
+    echo -n "$SECRET12" | /usr/sbin/cryptsetup open --type luks "/dev/disk/by-uuid/$DISK2" data2 --key-file=-
     RESULT2=$?
 
     ## Variable SECRET12 sofort aus dem Speicher löschen
@@ -100,11 +102,11 @@ if [ "$KEY_FOUND" = true ]; then
     unset SECRET2
 
     if [ $RESULT1 -eq 0 ] && [ $RESULT2 -eq 0 ]; then
-        echo "Laufwerke erfolgreich entschlüsselt."
+        echo "RAID-Laufwerke erfolgreich entschlüsselt."
 
         ## Mount RAID
         echo "Mounte RAID..."
-        /usr/bin/mount /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
+        /usr/bin/mount "$MOUNTPOINT_RAID"
     else
         echo "Fehler beim Entschlüsseln der Laufwerke."
         exit 1

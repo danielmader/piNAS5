@@ -1,18 +1,20 @@
 #!/bin/bash
 
+## Configuration
 KEYFILE=/mnt/data/.luks_secret
+
+## UUID
+# $ sudo lsblk -o
+DISK="db25f167-dffc-47de-98ff-cab6a0e272c9"
 
 echo -e "\n>>>> Decrypting and mounting LUKS container ..."
 
-## Open LUKS device
-# cryptsetup open --type luks /dev/sdc esata --key-file="$KEYFILE" || \
-# cryptsetup open --type luks /dev/sdd esata --key-file="$KEYFILE"
-if cryptsetup open --type luks /dev/sdc esata --key-file="$KEYFILE"; then
-    echo "Erfolgreich an /dev/sdc geöffnet."
-elif cryptsetup open --type luks /dev/sdd esata --key-file="$KEYFILE"; then
-    echo "Erfolgreich an /dev/sdd geöffnet."
+## Decrypt LUKS device
+if cryptsetup open --type luks "/dev/disk/by-uuid/$DISK" esata --key-file="$KEYFILE"; then
+    echo "Erfolgreich an /dev/disk/by-uuid/$DISK geöffnet."
 else
-    echo "Fehler: Gerät konnte weder auf /dev/sdc noch auf /dev/sdd gefunden werden."
+    echo "Fehler: eSATA-Laufwerk konnte nicht entschlüsselt werden!"
+    cryptsetup close esata
     exit 1
 fi
 
@@ -20,6 +22,7 @@ fi
 if mount /dev/mapper/esata /mnt/esata; then
     echo "Erfolgreich an /mnt/esata gemountet."
 else
-    echo "Fehler: Gerät konnte nicht gemountet werden."
+    echo "Fehler: eSATA-Laufwerk konnte nicht gemountet werden."
+    cryptsetup close esata
     exit 1
 fi
