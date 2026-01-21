@@ -1,0 +1,17 @@
+proc                    /proc           proc    defaults 0 0
+PARTUUID=605e9bc9-01    /boot/firmware  vfat    defaults 0 2
+PARTUUID=605e9bc9-02    /               ext4    noatime,nodiratime,defaults 0 1
+
+## OMV > Storage > File Systems > (+) Create and mount a file system
+>>> [openmediavault] 
+/dev/disk/by-uuid/db25f167-dffc-47de-98ff-cab6a0e272c8	/mnt/data	btrfs	defaults,nofail,noatime	0 2
+<<< [openmediavault]
+
+## RAID 5TB (testing/debugging)
+# UUID=db25f167-dffc-47de-98ff-cab6a0e272c8	/mnt/data/	btrfs	defaults,nofail,noatime,noauto 0 2
+#
+## eSATA 16TB (backup)
+# UUID=b0335d2a-328e-4a74-a25b-65a4db42b5d0	/mnt/esata/	btrfs	defaults,nofail,noatime,noauto 0 2
+#
+## no swap partition, use swapfile instead
+## $ sudo dphys-swapfile swap[on|off]
