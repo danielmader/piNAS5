@@ -98,7 +98,7 @@ Setup RAID Storage
     ## a) binary key
     $ dd bs=512 count=1 if=/dev/urandom of=cryptkey_urandom iflag=fullblock
     ## b) RSA key
-    $ openssl genrsa -out cryptkey_rsa 4096
+    $ openssl genrsa 4096 -out cryptkey_rsa
     $ chmod 400 cryptkey_*
 
     ## Create master passphrase (needed for creation of LUKS container)
@@ -132,31 +132,34 @@ Setup RAID Storage
 
     ## Finetune /etc/fstab
     $ sudo vim /etc/fstab
-        proc                    /proc           proc    defaults 0 0
-        PARTUUID=605e9bc9-01    /boot/firmware  vfat    defaults 0 2
-        PARTUUID=605e9bc9-02    /               ext4    noatime,nodiratime,defaults 0 1
-        # >>> [openmediavault]
-        /dev/disk/by-uuid/db25f167-dffc-47de-98ff-cab6a0e272c8          /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8      btrfs   defaults,nofail,noatime 0 2
-        /dev/disk/by-uuid/f152da8e-b4ae-4d8b-80d4-e59f37e589e1          /srv/dev-disk-by-uuid-f152da8e-b4ae-4d8b-80d4-e59f37e589e1      btrfs   defaults,nofail 0 2
+        proc                /proc           proc    defaults 0 0
+        PARTUUID=SDCARD-01  /boot/firmware  vfat    defaults 0 2
+        PARTUUID=SDCARD-02  /               ext4    noatime,nodiratime,defaults 0 1
+        ## OMV > Storage > File Systems > (+) Create and mount a file system
+        # >>> [openmediavault] 
+        # /dev/disk/by-uuid/<RAID-UUID>     /mnt/data   btrfs   defaults,nofail,noatime 0 2
         # <<< [openmediavault]
-            ## manual mount point for testing/debugging
-        #UUID=db25f167-dffc-47de-98ff-cab6a0e272c8      /mnt/data/      btrfs   defaults,noatime,compress=zstd 0 2
-        UUID=db25f167-dffc-47de-98ff-cab6a0e272c8       /mnt/data/      btrfs   defaults,nofail,noatime,noauto 0 2
-        # a swapfile is not a swap partition, no line here
-        #   use  dphys-swapfile swap[on|off]  for that
+        #
+        ## RAID 5TB (testing/debugging)
+        # UUID=<RAID-UUID>      /mnt/data/  btrfs   defaults,nofail,noatime,noauto 0 2
+        #
+        ## eSATA 16TB (backup)
+        # UUID=<eSATA-UUID>     /mnt/esata/ btrfs   defaults,nofail,noatime,noauto 0 2
+        #
+        ## no swap partition, use swapfile instead
+        ## $ sudo dphys-swapfile swap[on|off]
 
-    ## Mount RAID by either data1, data2 or mountpoint in /etc/fstab
+    ## Mount RAID using /etc/fstab
     $ sudo mount /dev/mapper/data1
     $ sudo mount /dev/mapper/data2
-    $ sudo mount /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
+    $ sudo mount /mnt/data
+    ## Mount RAID manually
+    $ mount -t btrfs -o defaults,nofail,noatime /dev/disk/by-uuid/<RAID-UUID> /mnt/data
 
     ## Show filesystem informations (similar to `mdadm --detail <device>`)
     $ sudo btrfs filesystem show
-    $ sudo btrfs filesystem df /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
-    $ sudo brrfs filesystem usage /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8
-
-    ## Create symlink for convenience
-    $ sudo ln -s /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8 /mnt/data
+    $ sudo btrfs filesystem df /mnt/data
+    $ sudo brrfs filesystem usage /mnt/data
 
 
 Setup Auto-Decrypt on Boot
@@ -165,7 +168,7 @@ Setup Auto-Decrypt on Boot
     $ sudo vim /etc/rc.local
         [...]
         ## Decrypt and mount data
-        bash /home/pi/bin/unlock_LUKSdata_wget.sh
+        bash /home/pi/bin/unlock_LUKSdata.sh
 
         exit 0
 
@@ -196,7 +199,7 @@ Setup & Start miniDLNA on Boot
     $ sudo vim /etc/rc.local
         [...]
         ## Start minidlna server when data is mounted
-        if mount | grep /srv/dev-disk-by-uuid-db25f167-dffc-47de-98ff-cab6a0e272c8 > /dev/null; then
+        if mount | grep /mnt/data > /dev/null; then
           printf "\n>>>> Starting MiniDLNA ...\n"
           systemctl start minidlna.service
         else

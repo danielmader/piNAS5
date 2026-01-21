@@ -72,8 +72,12 @@ TARGET_PATH="/mnt/data/Videos"
 DATA_SUBDIR="music2sort"
 TARGET_PATH="/mnt/data/Music/_music2sort_"
 
+PASSWORD_FILE="${RSNAPSHOT_ROOT}/secret_resticrustic"
+
+#export RESTIC_PASSWORD="dein_passwort"
 #export RUSTIC_PASSWORD="dein_passwort"
-PASSWORD_FILE="${RSNAPSHOT_ROOT}/restic_secret"
+export RESTIC_PASSWORD_FILE="$PASSWORD_FILE"
+export RUSTIC_PASSWORD_FILE="$PASSWORD_FILE"
 
 ## --- MIGRATIONSSCHLEIFE ---
 ## Wir gehen chronologisch vor: von manual.23 (alt) bis manual.0 (neu)

@@ -19,6 +19,7 @@ secrets/
 omv/
 
 ## Secrets & user settings
+home_pi/etc_openmediavault_config.xml*
 home_pi/.ssh/
 home_pi/.config/
 home_pi/certs/
