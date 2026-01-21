@@ -1,17 +1,18 @@
 #!/bin/bash
 
 ## Configuration
-SECRET_USB="/home/pi/.secretUSB"
-SECRET1="/home/pi/.secret1"
+SECRET1="/home/pi/cryptkey_rsa#1"
+KEYFILE_USB="/home/pi/cryptkey_USB"
 SECRET2_USB="/mnt/usb/cryptkey_rsa#2"
-SECRET2_EXT="/home/pi/.secretEXT"
+SECRET2_EXT="/home/pi/cryptkey_rsa#2_GoogleID"
 
 ## UUIDs
-# $ sudo lsblk -o NAME,FSTYPE,LABEL,UUID,PARTUUID,MOUNTPOINT
-DISK1="12280554-001a-43f9-aa5a-a0547201fce6"  # /dev/sda
-DISK2="fbfd2f96-25d2-45ac-99c1-d6647be23b55"  # /dev/sdb
-USB="7b4854df-4dd7-40fb-9028-9e7eff418da0"    # /dev/sdc1
-RAID="db25f167-dffc-47de-98ff-cab6a0e272c8"   # /dev/mapper/data1
+# $ lsblk -o NAME,FSTYPE,LABEL,UUID,PARTUUID,MOUNTPOINT
+# $ blkid
+USB="7b4854df-4dd7-40fb-9028-9e7eff418da0"
+DISK1="12280554-001a-43f9-aa5a-a0547201fce6"
+DISK2="fbfd2f96-25d2-45ac-99c1-d6647be23b55"
+RAID="db25f167-dffc-47de-98ff-cab6a0e272c8"  # /dev/mapper/data1
 
 ## Status variables
 KEY_FOUND=false
@@ -21,11 +22,11 @@ SECRET2=""
 
 echo -e "\n>>>> Lese Schlüssel vom USB-Gerät..."
 
-# cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB" 2>/dev/null
-if cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$SECRET_USB"; then
+# cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$KEYFILE_USB" 2>/dev/null
+if cryptsetup open --type luks "/dev/disk/by-uuid/$USB" usb --key-file="$KEYFILE_USB"; then
     echo "USB-Gerät erfolgreich entschlüsselt."
 else
-    echo "Warnung: USB-Gerät konnte nicht entschlüsselt werden!"
+    echo "USB-Gerät konnte nicht gefunden/entschlüsselt werden!"
 fi
 
 ## Wenn ein Gerät geöffnet wurde, versuchen zu mounten und zu lesen
