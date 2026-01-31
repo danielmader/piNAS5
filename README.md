@@ -1,5 +1,10 @@
 ![piNAS% assembly 1](20241115_144518.jpg)
 ![piNAS% assembly 2](20241120_184722.jpg)
+![piNAS% housing 1](Housing/PXL_20260131_105420428.PORTRAIT.jpg)
+![piNAS% housing 2](Housing/PXL_20260131_105440836.PORTRAIT.jpg)
+![piNAS% housing 3](Housing/PXL_20260131_105559454.PORTRAIT.jpg)
+![piNAS% housing 4](Housing/PXL_20260131_110022606.PORTRAIT.jpg)
+![piNAS% housing 5](Housing/PXL_20260131_110048874.PORTRAIT.jpg)
 
 Prepare System
 --------------
